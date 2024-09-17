@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = "stepdefinitions",//calisacak java kodları yeri
-        tags = "@appliget",//hangi testin calisacagi belirtme yeri
+        tags = "@UserGroupTypeIdV1",//hangi testin calisacagi belirtme yeri
         dryRun =false//'dryRun = true' testi çalıştırmaz, eksik step deinitionları bulur.
 )
 
