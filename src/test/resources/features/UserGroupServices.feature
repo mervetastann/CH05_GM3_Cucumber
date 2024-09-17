@@ -39,8 +39,7 @@ Feature: UserGroupServices
     And get and save information from field "group_type_id"
     And get and save information from field "id"
     Then the response for group status code should be 201
-#    Then I send a DELETE request to "/user-group" using saved information in parameter
-#    Then the response for group status code should be 200
+
 
 
 
@@ -96,3 +95,48 @@ Feature: UserGroupServices
     When I send a DELETE request for group to "/user-group/{{id}}"
 #  https://qa-gm3.quaspareparts.com/a3m/auth/api/v1/organization/1724253527891397/user/729
     Then the response for group status code should be 200
+
+
+  @negativegrup
+  Scenario: Don't Create a new user-group (empty name)
+    Given I set the base specification for GM API
+    When I send a POST request for group to "/user-group" with the following body
+    """
+{
+    "name": "",
+    "short_name": "name_olmadan test",
+    "group_type_id": 2,
+    "description": "zorunlu alan eksik oldugu icin kayit yapilmamali.",
+    "roles": [
+        {
+            "id": 5
+        }
+    ]
+}
+    """
+    Then the response for group status code should be 406
+    And the response should contain error message "UserGroup not created"
+
+
+
+  @negativegrup
+  Scenario: Don't Create a new user-group (empty name and group type id)
+    Given I set the base specification for GM API
+    When I send a POST request for group to "/user-group" with the following body
+    """
+    {
+      "name": "",
+      "short_name": "name alanı yok ve grup type id bos senaryosu ve create edilemeyecek",
+      "group_type_id": "",
+      "description": "Ekleme yapılmadı.",
+      "roles": [
+        {
+          "id": 5
+        }
+      ]
+    }
+    """
+    Then the response for group status code should be 406
+    And the response should contain error message "UserGroup not created"
+
+

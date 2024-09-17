@@ -59,5 +59,6 @@ Feature: Get Check Membership Type
   Scenario: Verify API response status code is 404
     Given I set the base specification for GM API
     When I send a GET request to "/membership-type/7"
-  Then the response status code should be 404
+    Then the response status code should be 404
+
 

@@ -25,14 +25,10 @@ public class Common {
 
     @Then("the response status code should be {int}")
     public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
-        if (response == null) {
-            throw new IllegalStateException("Response is not set. Ensure that a response is set before checking status code.");
-        }
-
-        // Status code kontrolü
         int actualStatusCode = response.getStatusCode();
         Assert.assertEquals("Status code does not match!", expectedStatusCode, actualStatusCode);
     }
+
 
     @Then("the Content-Type should be {string}")
     public void theContentTypeShouldBe(String expectedContentType) {
@@ -54,6 +50,7 @@ public class Common {
 
         // Doğru JSON yolu ile body kontrolü yap
         response.then().body("", hasSize(expectedLength));  // Burada JSON yolunu "id" olarak düzeltiyoruz
+//        System.out.println("response.then().body(\"\", hasSize(expectedLength)) = " + response.then().body("", hasSize(expectedLength)));
     }
 
     @And("print response body")
