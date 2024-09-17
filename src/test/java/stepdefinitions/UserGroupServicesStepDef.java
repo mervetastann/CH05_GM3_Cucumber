@@ -29,17 +29,24 @@ public class UserGroupServicesStepDef {
 
     @And("get and save information from field {string}")
     public void getAndSaveInformationFromField(String fieldName) {
-        // İlgili alanın değerini JSON response'dan alıyoruz
+        if (response == null) {
+            throw new RuntimeException("Response is null. Ensure that a POST request was successfully made.");
+        }
+
+        // Extract the field value from the JSON response
         String fieldValue = response.jsonPath().getString(fieldName);
 
-        // Kaydetmek istediğimiz alan "id" ise, Pojo'ya kaydediyoruz
-        if (fieldName.equals("id")) {
-            userPojo.setGroupId(fieldValue);
-        }
-        // Eğer başka bir alan varsa ona göre işlem yapabilirsiniz
-        // Örneğin:
-        else if (fieldName.equals("group_type_id")) {
-            userPojo.setGroup_type_id(fieldValue);
+        if (fieldValue != null) {
+            // Save the field value into userPojo
+            if (fieldName.equals("id")) {
+                userPojo.setGroupId(fieldValue);
+            } else if (fieldName.equals("group_type_id")) {
+                userPojo.setGroup_type_id(fieldValue);
+            } else {
+                System.out.println("Field '" + fieldName + "' does not match any known fields to save.");
+            }
+        } else {
+            System.out.println("Field '" + fieldName + "' not found in the response.");
         }
     }
 
@@ -139,6 +146,7 @@ public class UserGroupServicesStepDef {
     public void theResponseShouldContainErrorMessage(String expectedMessage) {
         response.then().body("message", equalTo(expectedMessage));
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-@userinfo
+@Userinfo
 Feature: User Information Management
 
   Scenario: Get User Info

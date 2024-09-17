@@ -10,8 +10,15 @@ import org.junit.Assert;
 import pojos.UserPojo;
 
 public class UserActionsSteps {
+    private static UserPojo userPojo = new UserPojo(); // Ensure this is shared across steps
+    private static Response response;
 
-    private Response response;
+    public static void setResponse(Response response) {
+        UserActionsSteps.response = response;
+    }
+    public static Response getResponse() {
+        return response;
+    }
 
     @Given("I set the base specification for GM API")
     public void iSetTheBaseSpecificationForGMAPI() {
@@ -22,6 +29,7 @@ public class UserActionsSteps {
     @When("I send a POST request to {string} with the following body")
     public void iSendAPOSTRequestToWithTheFollowingBody(String endpoint, String body) {
         UserPojo userPojo = UserInfoSteps.getUserPojo();
+
         if (userPojo == null) {
             throw new RuntimeException("User information not available. Ensure GET request is made first.");
         }
@@ -45,6 +53,7 @@ public class UserActionsSteps {
         } else {
             throw new RuntimeException("New user ID not found in response.");
         }
+        UserGroupServicesStepDef.setResponse(response); // Set response for further steps
     }
 
     @When("I send a PUT request to {string} with the following body")
