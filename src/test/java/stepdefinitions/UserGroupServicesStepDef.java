@@ -1,18 +1,43 @@
 package stepdefinitions;
 
+import base_urls.GMBaseUrl;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import pojos.UserPojo;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UserGroupServicesStepDef {
+//    Response response = Common.getResponse();
+////    UserPojo userPojo = new UserPojo();  // Pojo sınıfını burada initialize ediyoruz
+//    // Statik `userPojo` ile POST ve DELETE işlemlerini paylaşacağız
+//    private static UserPojo userPojo = new UserPojo();
+// Statik `userPojo` ile POST ve DELETE işlemleri arasında veri paylaşımı sağlıyoruz
+private static UserPojo userPojo = new UserPojo();
 
-    Response response = Common.getResponse();
-    UserPojo userPojo = new UserPojo();  // Pojo sınıfını burada initialize ediyoruz
+    // Response'u statik olarak tutmak için
+    private static Response response;
 
+    // Statik `userPojo`'yu erişilebilir hale getiriyoruz
+    public static UserPojo getUserPojo() {
+        return userPojo;
+    }
+
+    public static void setUserPojo(UserPojo userPojo) {
+        UserGroupServicesStepDef.userPojo = userPojo;
+    }
+
+    public static Response getResponse() {
+        return response;
+    }
+
+    public static void setResponse(Response response) {
+        UserGroupServicesStepDef.response = response;
+    }
     @And("get and save information from field {string}")
     public void getAndSaveInformationFromField(String fieldName) {
         // İlgili alanın değerini JSON response'dan alıyoruz
@@ -20,41 +45,166 @@ public class UserGroupServicesStepDef {
 
         // Kaydetmek istediğimiz alan "id" ise, Pojo'ya kaydediyoruz
         if (fieldName.equals("id")) {
-            userPojo.setSavedGroupId(fieldValue);
+            userPojo.setGroupId(fieldValue);
         }
         // Eğer başka bir alan varsa ona göre işlem yapabilirsiniz
         // Örneğin:
-         else if (fieldName.equals("group_type_id")) {
-             userPojo.setSavedGroup_type_id(fieldValue);
-         }
+        else if (fieldName.equals("group_type_id")) {
+            userPojo.setGroup_type_id(fieldValue);
+        }
     }
+
+//    @When("I send a POST request for group to {string} with the following body")
+//    public void i_send_a_post_request_for_group_to_with_the_following_body(String endpointim, String bodym) {
+//
+//        if (userPojo == null) {
+//            throw new RuntimeException("User information not available. Ensure GET request is made first.");
+//        }
+//
+//        this.response = RestAssured.given()
+//                .contentType("application/json")
+//                .body(bodym)
+//                .post(endpointim);
+//
+//        // Print response for debugging
+//        System.out.println("POST Response Body: " + response.getBody().asString());
+//
+//        // Yanıttan yeni grup ID'sini al ve Pojo'ya kaydet
+//        String groupId = response.jsonPath().getString("id");
+//        System.out.println("groupId = " + groupId);
+//        if (groupId != null) {
+//            userPojo.setGroupId(groupId); // Yeni grup ID'sini Pojo'ya kaydet
+//        } else {
+//            throw new RuntimeException("New group ID not found in response.");
+//        }
+//    }
+//
+//
+//    @When("I send a DELETE request for group to {string}")
+//    public void iSendADELETERequestForGroupTo(String endpoint) {
+//
+//        // groupId'nin null olup olmadığını kontrol ediyoruz
+//        if (userPojo == null || userPojo.getGroupId() == null) {
+//            throw new RuntimeException("Group ID is null. Ensure a POST request is made first.");
+//        }
+//
+//        // endpoint içindeki {{id}}'yi groupId ile değiştiriyoruz
+//        String updatedEndpoint = endpoint.replace("{{id}}", userPojo.getGroupId());
+//
+//        // DELETE isteğini gönderiyoruz
+//        this.response = RestAssured.delete(updatedEndpoint);
+//
+//        // Yanıtın başarıyla alındığını kontrol ediyoruz
+//        System.out.println("DELETE Response Status Code: " + response.getStatusCode());
+//
+//        // Eğer response başarılıysa, Common class'da kaydediyoruz
+//        Common.setResponse(response);
+//    }
+
+
     @When("I send a POST request for group to {string} with the following body")
     public void i_send_a_post_request_for_group_to_with_the_following_body(String endpointim, String bodym) {
 
-        if (userPojo == null) {
-            throw new RuntimeException("User information not available. Ensure GET request is made first.");
-        }
-
+        // POST isteği yapılıyor
         this.response = RestAssured.given()
                 .contentType("application/json")
                 .body(bodym)
                 .post(endpointim);
 
-        // Print response for debugging
+        // Response'u kaydediyoruz
+        UserGroupServicesStepDef.setResponse(response);
+
+        // Yanıtı ekrana yazdırma
         System.out.println("POST Response Body: " + response.getBody().asString());
 
-        // Yanıttan yeni grup ID'sini al ve Pojo'ya kaydet
+        // Yanıttan `groupId` ve `group_type_id` alınıyor ve `userPojo`'ya kaydediliyor
         String groupId = response.jsonPath().getString("id");
-        if (groupId != null) {
-            userPojo.setSavedGroupId(groupId); // Yeni grup ID'sini Pojo'ya kaydet
+        String groupTypeId = response.jsonPath().getString("group_type_id");
+
+        if (groupId != null && groupTypeId != null) {
+            // `userPojo`'yu güncelleme
+            userPojo.setGroupId(groupId);
+            userPojo.setGroup_type_id(groupTypeId);
+
+            // Debug için çıktılar
+            System.out.println("Group ID: " + groupId);
+            System.out.println("Group Type ID: " + groupTypeId);
         } else {
-            throw new RuntimeException("New group ID not found in response.");
+            throw new RuntimeException("Group ID or Group Type ID not found in response.");
         }
     }
+    @When("I send a DELETE request for group to {string}")
+    public void iSendADELETERequestForGroupTo(String endpoint) {
+
+        // `userPojo`'nun null olup olmadığını ve `groupId`'nin set edilip edilmediğini kontrol ediyoruz
+        if (userPojo == null || userPojo.getGroupId() == null) {
+            throw new RuntimeException("Group ID is null. Ensure a POST request is made first.");
+        }
+
+        // `groupId`'yi endpoint içine yerleştiriyoruz
+        String updatedEndpoint = endpoint.replace("{{id}}", userPojo.getGroupId());
+
+        // DELETE isteğini yapıyoruz
+        this.response = RestAssured.delete(updatedEndpoint);
+
+        // Yanıtı kaydediyoruz
+        UserGroupServicesStepDef.setResponse(response);
+
+        // Yanıtı ekrana yazdırma
+        System.out.println("DELETE Response Status Code: " + response.getStatusCode());
+
+        // Yanıt kodunun doğru olup olmadığını kontrol ediyoruz
+        if (response.getStatusCode() != 200) {
+            throw new RuntimeException("Failed to delete the group. Status code: " + response.getStatusCode());
+        }
+    }
+
 
 
     @And("the response group should have a field {string} with value {string}")
     public void theResponseGroupShouldHaveAFieldWithValue(String arg0, String arg1) {
         response.then().body(arg0, equalTo(arg1));
     }
+    @Then("the response for group status code should be {int}")
+    public void theResponseForGroupStatusCodeShouldBe(int arg0) {
+        response.then().statusCode(arg0);
+
+    }
+
+    @Then("I send a DELETE request to {string} using saved information in parameter")
+    public void iSendADELETERequestToUsingSavedInformationInParameter(String endpoint) {
+        this.response = RestAssured.delete(endpoint + "/" + userPojo.getGroupId());
+    }
+
+    @When("I for group service send a PUT request to {string} with the following body")
+    public void iForGroupServiceSendAPUTRequestToWithTheFollowingBody(String endpoint, String body) {
+
+        // `userPojo`'da kaydedilen `groupId`'yi kontrol ediyoruz
+        if (userPojo == null || userPojo.getGroupId() == null) {
+            throw new RuntimeException("Group ID is null. Ensure a POST request is made first.");
+        }
+
+        // `body` içindeki {{id}}'yi `userPojo.getGroupId()` ile değiştiriyoruz
+        String updatedBody = body.replace("{{id}}", userPojo.getGroupId());
+
+        // Endpoint içindeki {{id}}'yi güncellemek gerekmediği için bu kısımda değişiklik yapmıyoruz
+        String updatedEndpoint = endpoint;
+
+        // PUT isteğini gönderiyoruz
+        this.response = RestAssured.given()
+                .contentType("application/json")
+                .body(updatedBody)
+                .put(updatedEndpoint);
+
+        // Yanıtı kaydediyoruz
+        Common.setResponse(response);
+
+        // Yanıtın başarılı olup olmadığını kontrol et
+        System.out.println("PUT Response Status Code: " + response.getStatusCode());
+
+        if (response.getStatusCode() != 200) {
+            throw new RuntimeException("Failed to update the group. Status code: " + response.getStatusCode());
+        }
+    }
+
 }

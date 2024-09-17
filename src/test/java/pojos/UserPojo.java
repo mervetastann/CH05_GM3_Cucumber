@@ -5,23 +5,23 @@ public class UserPojo {
     private String organization_id;
     private String subscription_id;
     private String savedUserId;
-    private String savedGroupId;
-    private String savedGroup_type_id;
+    private String GroupId;
+    private String Group_type_id;
 
-    public String getSavedGroup_type_id() {
-        return savedGroup_type_id;
+    public String getGroup_type_id() {
+        return Group_type_id;
     }
 
-    public void setSavedGroup_type_id(String savedGroup_type_id) {
-        this.savedGroup_type_id = savedGroup_type_id;
+    public void setGroup_type_id(String group_type_id) {
+        this.Group_type_id = group_type_id;
     }
 
-    public String getSavedGroupId() {
-        return savedGroupId;
+    public String getGroupId() {
+        return GroupId;
     }
 
-    public void setSavedGroupId(String savedGroupId) {
-        this.savedGroupId = savedGroupId;
+    public void setGroupId(String groupId) {
+        this.GroupId = groupId;
     }
 
     // Getters and setters
