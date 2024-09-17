@@ -61,3 +61,4 @@ Feature: Get Check Membership Type
     When I send a GET request to "/membership-type/7"
     Then the response status code should be 404
 
+
