@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import pojos.UserPojo;
 
 import java.util.List;
 
@@ -13,14 +14,24 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class Common {
 
-    private static Response response; // Static yaparak ortak kullanılmasını sağlar
+    private static Response response;
+    private static UserPojo userPojo = new UserPojo(); // Ensure `userPojo` is shared across steps
 
-    // Statik metot ile `response`'i ayarlamak
+    // Static method to set response
     public static void setResponse(Response response) {
         Common.response = response;
     }
+
     public static Response getResponse() {
         return response;
+    }
+
+    public static UserPojo getUserPojo() {
+        return userPojo;
+    }
+
+    public static void setUserPojo(UserPojo userPojo) {
+        Common.userPojo = userPojo;
     }
 
     @Then("the response status code should be {int}")
