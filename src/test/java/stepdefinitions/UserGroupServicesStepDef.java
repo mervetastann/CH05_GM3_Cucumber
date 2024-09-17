@@ -12,11 +12,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UserGroupServicesStepDef {
-//    Response response = Common.getResponse();
-////    UserPojo userPojo = new UserPojo();  // Pojo sınıfını burada initialize ediyoruz
-//    // Statik `userPojo` ile POST ve DELETE işlemlerini paylaşacağız
-//    private static UserPojo userPojo = new UserPojo();
-// Statik `userPojo` ile POST ve DELETE işlemleri arasında veri paylaşımı sağlıyoruz
+
 private static UserPojo userPojo = new UserPojo();
 
     // Response'u statik olarak tutmak için
@@ -53,53 +49,6 @@ private static UserPojo userPojo = new UserPojo();
             userPojo.setGroup_type_id(fieldValue);
         }
     }
-
-//    @When("I send a POST request for group to {string} with the following body")
-//    public void i_send_a_post_request_for_group_to_with_the_following_body(String endpointim, String bodym) {
-//
-//        if (userPojo == null) {
-//            throw new RuntimeException("User information not available. Ensure GET request is made first.");
-//        }
-//
-//        this.response = RestAssured.given()
-//                .contentType("application/json")
-//                .body(bodym)
-//                .post(endpointim);
-//
-//        // Print response for debugging
-//        System.out.println("POST Response Body: " + response.getBody().asString());
-//
-//        // Yanıttan yeni grup ID'sini al ve Pojo'ya kaydet
-//        String groupId = response.jsonPath().getString("id");
-//        System.out.println("groupId = " + groupId);
-//        if (groupId != null) {
-//            userPojo.setGroupId(groupId); // Yeni grup ID'sini Pojo'ya kaydet
-//        } else {
-//            throw new RuntimeException("New group ID not found in response.");
-//        }
-//    }
-//
-//
-//    @When("I send a DELETE request for group to {string}")
-//    public void iSendADELETERequestForGroupTo(String endpoint) {
-//
-//        // groupId'nin null olup olmadığını kontrol ediyoruz
-//        if (userPojo == null || userPojo.getGroupId() == null) {
-//            throw new RuntimeException("Group ID is null. Ensure a POST request is made first.");
-//        }
-//
-//        // endpoint içindeki {{id}}'yi groupId ile değiştiriyoruz
-//        String updatedEndpoint = endpoint.replace("{{id}}", userPojo.getGroupId());
-//
-//        // DELETE isteğini gönderiyoruz
-//        this.response = RestAssured.delete(updatedEndpoint);
-//
-//        // Yanıtın başarıyla alındığını kontrol ediyoruz
-//        System.out.println("DELETE Response Status Code: " + response.getStatusCode());
-//
-//        // Eğer response başarılıysa, Common class'da kaydediyoruz
-//        Common.setResponse(response);
-//    }
 
 
     @When("I send a POST request for group to {string} with the following body")

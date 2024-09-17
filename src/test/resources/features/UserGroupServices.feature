@@ -1,19 +1,19 @@
 @UsersGroupsApi
 Feature: UserGroupServices
 
-#  @GetAllUsersGroupControl
-#  Scenario: Get
-#    Given I set the base specification for GM API
-#    When I send a GET request to "/user-group"
-#    Then the response status code should be 200
-#    And print response body
-#
-#  @GetOrgandIdUsersGroupControlSSSS
-#  Scenario: Get
-#    Given I set the base specification for GM API
-#    When I send a GET request to "v1/organization/1724253527891397/user-group/479/details"
-#    Then the response status code should be 200
-#    And print response body
+  @GetAllUsersGroupControl
+  Scenario: Get
+    Given I set the base specification for GM API
+    When I send a GET request to "/user-group"
+    Then the response status code should be 200
+    And print response body
+
+  @GetOrgandIdUsersGroupControlSSSS
+  Scenario: Get
+    Given I set the base specification for GM API
+    When I send a GET request to "v1/organization/1724253527891397/user-group/479/details"
+    Then the response status code should be 200
+    And print response body
 
   @PostCreateUserGroup
   Scenario: Create a new user-group

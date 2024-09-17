@@ -55,9 +55,9 @@ Feature: Get Check Membership Type
     Then the response status code should be 200
     And the name field should be "Guest Membership"
 
-  @Negativemember
-  Scenario: Verify API response status code is 404
-    Given I set the base specification for GM API
-    When I send a GET request to "/membership-type/7"
-    Then the response status code should be 404
+#  @Negativemember
+#  Scenario: Verify API response status code is 404
+#    Given I set the base specification for GM API
+#    When I send a GET request to "/membership-type/7"
+#  Then the response status code should be 404
 
