@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import pojos.UserPojo;
 
 import java.util.List;
 
@@ -13,26 +14,32 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class Common {
 
-    private static Response response; // Static yaparak ortak kullanılmasını sağlar
+    private static Response response;
+    private static UserPojo userPojo = new UserPojo(); // Ensure `userPojo` is shared across steps
 
-    // Statik metot ile `response`'i ayarlamak
+    // Static method to set response
     public static void setResponse(Response response) {
         Common.response = response;
     }
+
     public static Response getResponse() {
         return response;
     }
 
+    public static UserPojo getUserPojo() {
+        return userPojo;
+    }
+
+    public static void setUserPojo(UserPojo userPojo) {
+        Common.userPojo = userPojo;
+    }
+
     @Then("the response status code should be {int}")
     public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
-        if (response == null) {
-            throw new IllegalStateException("Response is not set. Ensure that a response is set before checking status code.");
-        }
-
-        // Status code kontrolü
         int actualStatusCode = response.getStatusCode();
         Assert.assertEquals("Status code does not match!", expectedStatusCode, actualStatusCode);
     }
+
 
     @Then("the Content-Type should be {string}")
     public void theContentTypeShouldBe(String expectedContentType) {
@@ -54,6 +61,7 @@ public class Common {
 
         // Doğru JSON yolu ile body kontrolü yap
         response.then().body("", hasSize(expectedLength));  // Burada JSON yolunu "id" olarak düzeltiyoruz
+//        System.out.println("response.then().body(\"\", hasSize(expectedLength)) = " + response.then().body("", hasSize(expectedLength)));
     }
 
     @And("print response body")
