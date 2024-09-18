@@ -93,7 +93,6 @@ Feature: UserGroupServices
   Scenario: Delete User
     Given I set the base specification for GM API
     When I send a DELETE request for group to "/user-group/{{id}}"
-#  https://qa-gm3.quaspareparts.com/a3m/auth/api/v1/organization/1724253527891397/user/729
     Then the response for group status code should be 200
 
 
