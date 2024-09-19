@@ -1,6 +1,7 @@
 package stepdefinitions;
 
 import base_urls.GMBaseUrl;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,6 +13,7 @@ import pojos.UserPojo;
 public class UserActionsSteps {
     private static UserPojo userPojo = new UserPojo(); // Ensure this is shared across steps
     private static Response response;
+    public static String savedValue;
 
     public static void setResponse(Response response) {
         UserActionsSteps.response = response;
@@ -99,6 +101,13 @@ public class UserActionsSteps {
         Assert.assertNotNull("Field '" + fieldName + "' not found in response.", actualValue);
         Assert.assertEquals(expectedValue, actualValue);
 
+    }
+
+    // Bilgiyi almak ve kaydetmek
+    @And("get and saved information from field {string}")
+    public void get_and_saved_information(String field) {
+        savedValue = response.jsonPath().getString(field);
+        System.out.println("Saved Value: " + savedValue);  // İsteğe bağlı olarak konsola yazdırabiliriz
     }
 
 
