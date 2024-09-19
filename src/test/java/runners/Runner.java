@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
 //        features = {"src/test/resources/features/01userinfo.feature", "src/test/resources/features/UserAndUseGroup.feature"},
         glue = "stepdefinitions",//calisacak java kodları yeri
-        tags = "@Userinfo or @uxEntegrasyonUserUG",//hangi testin calisacagi belirtme yeri
+        tags = "@Userinfo or @EntegrasyonUserAndRole",//hangi testin calisacagi belirtme yeri
         dryRun =false//'dryRun = true' testi çalıştırmaz, eksik step deinitionları bulur.
 )
 
