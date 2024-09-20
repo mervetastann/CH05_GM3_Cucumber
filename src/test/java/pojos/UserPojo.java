@@ -7,6 +7,17 @@ public class UserPojo {
     private String savedUserId;
     private String groupId;
     private String group_type_id;
+    private String sub_status_id;
+
+
+    public String getSub_status_id() {
+        return sub_status_id;
+    }
+
+    public void setSub_status_id(String sub_status_id) {
+        this.sub_status_id = sub_status_id;
+    }
+
 
     public String getGroup_type_id() {
         return group_type_id;

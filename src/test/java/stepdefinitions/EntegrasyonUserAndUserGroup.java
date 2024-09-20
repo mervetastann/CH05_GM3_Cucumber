@@ -2,16 +2,15 @@ package stepdefinitions;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import pojos.UserPojo;
 
 import static io.restassured.RestAssured.given;
 
 
-public class EntegrasyonUserUserGroup {
+public class EntegrasyonUserAndUserGroup {
 
-    private static UserPojo userPojo = UserInfoSteps.getUserPojo(); // Ensure this is shared across steps
+    private static UserPojo userPojo = UserInfoSteps.getUserPojo(); //sadece bu clasta kullanılacak durumda
     private Response response;
 
     @When("I take user id send with a POST request for group to {string} with the following body")
@@ -25,10 +24,6 @@ public class EntegrasyonUserUserGroup {
                 .body(updatedBody)
                 .post(endpoint);
 
-
-        System.out.println("POST Response Body: " + response.getBody().asString());
-        System.out.println("POST Status Code: " + response.getStatusCode());
-
         if (response.getStatusCode() == 201) {
             String groupId = response.jsonPath().getString("id");
             String groupTypeId = response.jsonPath().getString("group_type_id");
@@ -38,7 +33,7 @@ public class EntegrasyonUserUserGroup {
             throw new RuntimeException("Failed to create user group. Status code: " + response.getStatusCode());
         }
 
-        UserGroupServicesStepDef.setResponse(response); // Set the response
+        UserGroupServicesStepDef.setResponse(response); // Set response
     }
 
     @And("get and save information from field after create {string}")

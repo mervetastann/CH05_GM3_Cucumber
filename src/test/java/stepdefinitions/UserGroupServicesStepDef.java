@@ -29,15 +29,9 @@ public class UserGroupServicesStepDef {
 
     @And("get and save information from field {string}")
     public void getAndSaveInformationFromField(String fieldName) {
-        if (response == null) {
-            throw new RuntimeException("Response is null. Ensure that a POST request was successfully made.");
-        }
-
-        // Extract the field value from the JSON response
         String fieldValue = response.jsonPath().getString(fieldName);
 
         if (fieldValue != null) {
-            // Save the field value into userPojo
             if (fieldName.equals("id")) {
                 userPojo.setGroupId(fieldValue);
             } else if (fieldName.equals("group_type_id")) {
@@ -53,7 +47,7 @@ public class UserGroupServicesStepDef {
 
     @When("I send a POST request for group to {string} with the following body")
     public void i_send_a_post_request_for_group_to_with_the_following_body(String endpointim, String bodym) {
-        // POST isteği yapılıyor
+        // POST
         this.response =given()
                 .contentType("application/json")
                 .body(bodym)
@@ -61,9 +55,6 @@ public class UserGroupServicesStepDef {
 
         // Response'u kaydediyoruz
         UserGroupServicesStepDef.setResponse(response);
-
-        // Yanıtı ekrana yazdırma
-        System.out.println("POST Response Body: " + response.getBody().asString());
 
         // Yanıttan `groupId` ve `group_type_id` alınıyor ve `userPojo`'ya kaydediliyor
         String groupId = response.jsonPath().getString("id");
@@ -81,28 +72,10 @@ public class UserGroupServicesStepDef {
 
     @When("I send a DELETE request for group to {string}")
     public void iSendADELETERequestForGroupTo(String endpoint) {
-
-        // `userPojo`'nun null olup olmadığını ve `groupId`'nin set edilip edilmediğini kontrol ediyoruz
-        if (userPojo == null || userPojo.getGroupId() == null) {
-            throw new RuntimeException("Group ID is null. Ensure a POST request is made first.");
-        }
-
-        // `groupId`'yi endpoint içine yerleştiriyoruz
-        String updatedEndpoint = endpoint.replace("{{id}}", userPojo.getGroupId());
-
-        // DELETE isteğini yapıyoruz
-        this.response = RestAssured.delete(updatedEndpoint);
-
+        // DELETE
+        this.response = RestAssured.delete(endpoint.replace("{{id}}", userPojo.getGroupId()));
         // Yanıtı kaydediyoruz
         UserGroupServicesStepDef.setResponse(response);
-
-        // Yanıtı ekrana yazdırma
-        System.out.println("DELETE Response Status Code: " + response.getStatusCode());
-
-        // Yanıt kodunun doğru olup olmadığını kontrol ediyoruz
-        if (response.getStatusCode() != 200) {
-            throw new RuntimeException("Failed to delete the group. Status code: " + response.getStatusCode());
-        }
     }
 
 
@@ -123,18 +96,13 @@ public class UserGroupServicesStepDef {
 
     @When("I for group service send a PUT request to {string} with the following body")
     public void iForGroupServiceSendAPUTRequestToWithTheFollowingBody(String endpoint, String body) {
-
         // `body` içindeki {{id}}'yi `userPojo.getGroupId()` ile değiştiriyoruz
         String updatedBody = body.replace("{{id}}", userPojo.getGroupId());
-
-        // Endpoint içindeki {{id}}'yi güncellemek gerekmediği için bu kısımda değişiklik yapmıyoruz
-        String updatedEndpoint = endpoint;
-
-        // PUT isteğini gönderiyoruz
+         // PUT
         this.response = RestAssured.given()
                 .contentType("application/json")
                 .body(updatedBody)
-                .put(updatedEndpoint);
+                .put(endpoint);
 
         // Yanıtı kaydediyoruz
         Common.setResponse(response);

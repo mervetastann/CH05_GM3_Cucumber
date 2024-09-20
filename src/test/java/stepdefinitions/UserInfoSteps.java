@@ -11,10 +11,10 @@ import base_urls.GMBaseUrl;
 public class UserInfoSteps {
 
     private Response response;
-    private static UserPojo userPojo;
+    private static UserPojo userPojo;//
 
     public static UserPojo getUserPojo() {
-        return userPojo;
+        return userPojo;//userpojoya encupcilation ile protected yapıyoruz direk ulasımı sağlamayıp kontrollu ulasım icin.
     }
 
     @Given("I set the base specification for User Info API")
@@ -33,7 +33,7 @@ public class UserInfoSteps {
     public void iSaveFieldFromTheResponse(String fieldName) {
         String fieldValue = response.jsonPath().getString(fieldName);
         if (userPojo == null) {
-            userPojo = new UserPojo();
+            userPojo = new UserPojo();//en basta atanmamıs halde burdan create ediliyor
         }
 
         switch (fieldName) {
@@ -49,6 +49,7 @@ public class UserInfoSteps {
             case "id":
                 userPojo.setSavedUserId(fieldValue);
                 break;
+
             default:
                 throw new IllegalArgumentException("Unexpected field name: " + fieldName);
         }
@@ -56,10 +57,6 @@ public class UserInfoSteps {
 
     @And("I print the response body")
     public void iPrintTheResponseBody() {
-        if (response != null) {
-            System.out.println("Response Body: " + response.getBody().asString());
-        } else {
-            System.out.println("Response is null. Cannot print the response body.");
-        }
+            response.prettyPrint();
     }
 }
