@@ -1,6 +1,7 @@
 package stepdefinitions;
 
 import base_urls.GMBaseUrl;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,6 +13,7 @@ import pojos.UserPojo;
 public class UserServiceStepDef {
 //    private static UserPojo userPojo = new UserPojo(); // Ensure this is shared across steps
     private static Response response;
+    public static String savedValue;
 
     public static void setResponse(Response response) {
         UserServiceStepDef.response = response;//encup:niye?bu userpojoya cağırıyorum baska bir clasa cagırınca ordaki userpojoyla karısmıyor. hali hazirda bir userpojo ,oop
@@ -86,6 +88,13 @@ public class UserServiceStepDef {
         String actualValue = response.jsonPath().getString(fieldName);
         Assert.assertEquals(expectedValue, actualValue);
 
+    }
+
+    // Bilgiyi almak ve kaydetmek
+    @And("get and saved information from field {string}")
+    public void get_and_saved_information(String field) {
+        savedValue = response.jsonPath().getString(field);
+        System.out.println("Saved Value: " + savedValue);  // İsteğe bağlı olarak konsola yazdırabiliriz
     }
 
 
