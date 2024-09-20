@@ -1,4 +1,4 @@
-@uxEntegrasyonUserUG
+@EntegrasyonUserAndUserGroup
 Feature: User and User Group Entegrasyonu
 
   Scenario: Create a New User and Save User ID
