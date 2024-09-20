@@ -48,18 +48,18 @@ public class EntegrasyonUserAndRole {
 
     @And("update user role")
     public void updateUserRole() {
-        String endpoint = "/v1/user/"+ UserActionsSteps.savedValue+"/application/"+userPojo.getApp_id()+"/membership/3f5f58ee-72bf-41bb-a5ba-31beceff791b/role/"+randomRoleId+"/add-role";
+        String endpoint = "/v1/user/"+ UserServiceStepDef.savedValue+"/application/"+userPojo.getApp_id()+"/membership/3f5f58ee-72bf-41bb-a5ba-31beceff791b/role/"+randomRoleId+"/add-role";
         response = given().when().put(endpoint);
         
     }
     @And("set default role")
     public void setDefaultRole() {
-        String endpoint = "/v1/user/"+ UserActionsSteps.savedValue+"/application/"+userPojo.getApp_id()+"/membership/3f5f58ee-72bf-41bb-a5ba-31beceff791b/role/"+randomRoleId+"/set-default-role";
+        String endpoint = "/v1/user/"+ UserServiceStepDef.savedValue+"/application/"+userPojo.getApp_id()+"/membership/3f5f58ee-72bf-41bb-a5ba-31beceff791b/role/"+randomRoleId+"/set-default-role";
         response = given().when().put(endpoint);
     }
     @And("I send a GET user request to {string}")
     public void iSendAGETRequestTo(String endpoint) {
-        response = RestAssured.given().when().get(endpoint+"/"+UserActionsSteps.savedValue);
+        response = RestAssured.given().when().get(endpoint+"/"+UserServiceStepDef.savedValue);
         Common.setResponse(response);
 
         String defaultRoleIdFromResponse = response.jsonPath().getString("default_role_id");
