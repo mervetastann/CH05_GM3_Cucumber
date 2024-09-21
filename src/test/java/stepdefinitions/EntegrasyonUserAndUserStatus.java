@@ -86,6 +86,7 @@ public class EntegrasyonUserAndUserStatus {
 
     @When("I send a PUT request for entegrasyon to {string} with the following body")
     public void iSendAPUTRequestForEntegrasyonToWithTheFollowingBody(String endpoint, String body) {
+        System.out.println("userPojo.getSub_status_id() = " + userPojo.getSub_status_id());
         // Gönderilecek
         String updatedBody = body
                 .replace("{{id}}", userPojo.getSavedUserId())
@@ -99,6 +100,8 @@ public class EntegrasyonUserAndUserStatus {
                 .body(updatedBody)
                 .put(endpoint);
 
+
+
     }
 
     @And("the response should have a field entg {string} with value {string}")
@@ -109,6 +112,7 @@ public class EntegrasyonUserAndUserStatus {
 
     @When("I send a DELETE  entegrasyon request to {string}")
     public void iSendADELETEEntegrasyonRequestTo(String arg0) {
+        System.out.println("Silinecek user ID: " + userPojo.getSavedUserId() + " ve status ID: " + userPojo.getSub_status_id());
         String updatedEndpoint = arg0.replace("{{id}}", userPojo.getSavedUserId());
 
         this.response = given()

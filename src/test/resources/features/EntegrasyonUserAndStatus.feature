@@ -6,7 +6,7 @@ Feature: User and User Group Entegrasyonu
     When I send a POST request with status to "/v1/organization/user/register-manual" with the following body
     """
     {
-        "email": "bomba2@example.com",
+        "email": "ent24@example.com",
         "organization_id": {{org_ID}},
         "app_id": {{app_ID}},
         "default_role_id": 5,
@@ -24,7 +24,7 @@ Feature: User and User Group Entegrasyonu
     }
     """
     Then the response status code should be 200
-    And the response should have a field entg "email" with value "bomba2@example.com"
+    And the response should have a field entg "email" with value "ent24@example.com"
     When I send a for status GET request to "/user-status"
     And save a random status id from the response
 
@@ -34,7 +34,7 @@ Feature: User and User Group Entegrasyonu
     """
     {
         "id": {{id}},
-        "email": "bombaupdate@example.com",
+        "email": "entupdate24@example.com",
         "organization_id": {{org_ID}},
         "app_id": {{app_ID}},
         "default_role_id": 5,
@@ -52,7 +52,7 @@ Feature: User and User Group Entegrasyonu
     }
     """
     Then the response status code should be 200
-    And the response should have a field entg "email" with value "bombaupdate@example.com"
+    And the response should have a field entg "email" with value "entupdate24@example.com"
 
   Scenario: Delete User
     Given I set the base specification for GM API

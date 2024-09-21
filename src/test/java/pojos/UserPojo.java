@@ -8,7 +8,15 @@ public class UserPojo {
     private String groupId;
     private String group_type_id;
     private String sub_status_id;
+    private String rol_id;
 
+    public String getRol_id() {
+        return rol_id;
+    }
+
+    public void setRol_id(String rol_id) {
+        this.rol_id = rol_id;
+    }
 
     public String getSub_status_id() {
         return sub_status_id;

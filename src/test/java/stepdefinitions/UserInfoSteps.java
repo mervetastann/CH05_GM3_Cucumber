@@ -49,6 +49,9 @@ public class UserInfoSteps {
             case "id":
                 userPojo.setSavedUserId(fieldValue);
                 break;
+                case "sub_roles.sub_default_role_id":
+                userPojo.setRol_id(fieldValue);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unexpected field name: " + fieldName);
